@@ -1,4 +1,4 @@
-from block import Amount, Transaction
+from block import Amount, Block, Transaction
 
 
 def test_amount_todict():
@@ -13,6 +13,13 @@ def test_transaction():
                      Amount('fred', 4)])
     assert t.todict() == {'inputs': [{'amount': 5, 'uuid': 'matt'}],
           'outputs': [{'amount': 1, 'uuid': 'matt'}, {'amount': 4, 'uuid': 'fred'}]}
+
+
+def test_block():
+    b = Block([], '')
+    assert b.todict() == {'body':
+        {'txns': []},
+        'header': {'body_hash': '5c12d30d9ba5ddf3b2ba5ae8bf652b902fb005f91e2e0877269b5a9cec975052', 'nonce': None, 'prev_hash': ''}}
 
 
 if __name__ == '__main__':
