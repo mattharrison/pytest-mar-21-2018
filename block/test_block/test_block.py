@@ -1,4 +1,4 @@
-from block import Amount, Block, Transaction
+from block import Amount, Block, Node, Transaction
 
 
 def test_amount_todict():
@@ -21,6 +21,12 @@ def test_block():
         {'txns': []},
         'header': {'body_hash': '5c12d30d9ba5ddf3b2ba5ae8bf652b902fb005f91e2e0877269b5a9cec975052', 'nonce': None, 'prev_hash': ''}}
 
+
+def test_txn():
+    node = Node('matt')
+    gb, hash = node.process_txns([])
+    assert hash.startswith('0')
+    
 
 if __name__ == '__main__':
     import pytest

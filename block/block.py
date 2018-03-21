@@ -22,6 +22,7 @@ import hashlib
 import json
 
 # this is a comment
+MINING_COST = 1
 
 
 class Amount:
@@ -59,6 +60,9 @@ class Block:
                 'body': body}
         return data
 
+    def get_hash(self, nonce):
+        return get_hash(self.todict(nonce))
+
 
 def get_hash(dict_data):
     sha = hashlib.sha256()
@@ -66,7 +70,29 @@ def get_hash(dict_data):
     sha.update(data.encode('utf-8'))
     return sha.hexdigest()
     
-    
+
+class Node:
+    def __init__(self, uuid):
+        self.uuid = uuid
+        self.blocks = []
+
+    def process_txns(self, txns, difficulty=1):
+        txns.insert(0, Transaction([], [Amount(self.uuid,
+                                              MINING_COST)]))
+        if self.blocks:
+            prev_hash = self.blocks[-1].prev_hash
+        else:
+            prev_hash = ''
+        block = Block(txns, prev_hash)
+        nonce = 0
+        while True:
+            hash = block.get_hash(nonce)
+            if hash.startswith('0'*difficulty):
+                block.nonce = nonce
+                self.blocks.append(block)
+                return block, hash
+            nonce += 1
+        
                    
 
     
