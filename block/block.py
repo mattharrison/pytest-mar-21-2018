@@ -30,6 +30,17 @@ class Amount:
     def todict(self):
         return {'uuid': self.uuid, 'amount': self.amount}
 
+
+class Transaction:
+    def __init__(self, inputs, outputs):
+        self.inputs = inputs
+        self.outputs = outputs
+
+    def todict(self):
+        return {'inputs': [i.todict() for i in self.inputs],
+                'outputs': [o.todict() for o in self.outputs]}
+        
+
     
 if __name__ == '__main__':
     import doctest
